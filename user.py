@@ -11,7 +11,6 @@ class User:
         self.password_hash = kwargs.get("password")
         self.phone = kwargs.get("phone")
         self.username = kwargs.get("username")
-
         self.token = kwargs.get("auth_token")
 
     def save(self):

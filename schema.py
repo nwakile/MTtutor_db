@@ -56,13 +56,13 @@ def schema(dbpath):
 
         SQL = """CREATE TABLE performance(
                 pk INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
                 qb_id INTEGER,
+                user_id INTEGER,
                 testdate DATETIME,
                 answer_choice VARCHAR(6),
                 success BOOLEAN,
-                FOREIGN KEY(users_pk) REFERENCES user(pk),
-                FOREIGN KEY(qb_pk) REFERENCES qb(pk)
+                FOREIGN KEY(qb_id) REFERENCES qb(pk),
+                FOREIGN KEY(user_id) REFERENCES user(pk)
                 
                 
         );"""
@@ -70,7 +70,7 @@ def schema(dbpath):
 
 
         # Subjects
-        SQL = "DROP TABLE IF EXISTS subjects;"
+        SQL = "DROP TABLE IF EXISTS Subjects;"
         cursor.execute(SQL)
 
         sql = """CREATE TABLE Subjects(

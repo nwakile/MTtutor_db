@@ -5,37 +5,78 @@ class Qb:
     dbpath = ""
     tablename = "qb"
 
-def dump_qb(filepath):
-    with open(filepath, 'r') as input_csv:
-        reader = csv.reader(input_csv)
-        # next(reader)
-        header = next(reader)
-        current_pk = 1
-        for row in reader:
-            Subject_ID, Subject, Topic, Question_No, Question_Name, Answer_A, Answer_B, Answer_C, Answer_D, Answer_E, True_Answer_1, True_Answer_2 = row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11]
-            add_qb(Subject_ID, Subject, Topic, Question_No, Question_Name, Answer_A, Answer_B, Answer_C, Answer_D, Answer_E, True_Answer_1, True_Answer_2)
-            # for Section in row[0:1]:
-            #     add_user(email, current_pk)
+    def __init__(self,**kwargs):
+        self.pk=kwargs.get("pk")
+        self.subject_id=kwargs.get("subject_id")
+        #subject is redundant
+        self.topic = kwargs.get("topic")
+        self.question_no = kwargs.get("question_no")
+        self.question_name = kwargs.get("question_name")
+        self.answer_a = kwargs.get("answer_a")
+        self.answer_b = kwargs.get("answer_b")
+        self.answer_c = kwargs.get("answer_c")
+        self.answer_d = kwargs.get("answer_d")
+        self.answer_e = kwargs.get("answer_e")
+        self.true_answer_1 = kwargs.get("True_Answer_1")
+        self.true_answer_2 = kwargs.get("True_Answer_2")
 
-            # current_pk += 1
+    def save(self):
+        if self.pk is None:
+            self._insert()
+        else:
+            self._update()
+    
+    def _insert(self):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """INSERT INTO {} (subject_id, Topic, question_no, question_name, answer_a, answer_b, answer_c, 
+                    answer_d, answer_e, true_answer_1, true_answer_2)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?);""".format(self.tablename)
+            values = (self.subject_id, self.topic, self.question_no, self.question_name, self.answer_a, self.answer_b, 
+                    self.answer_c, self.answer_d, self.answer_e, self.true_answer_1, self.true_answer_2)
+            cursor.execute(sql, values)
 
-def add_qb(Subject_ID, Subject, Topic, Question_No, Question_Name, Answer_A, Answer_B, Answer_C, Answer_D, Answer_E, True_Answer_1,	True_Answer_2):
-    with sqlite3.connect("qb.db") as conn:
-        cursor = conn.cursor()
-        SQL = """INSERT INTO qb(Subject_ID, Subject, Topic, Question_No, Question_Name, Answer_A, Answer_B, Answer_C, Answer_D, Answer_E, True_Answer_1, True_Answer_2) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"""
+    def _update(self):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """UPDATE {} SET subject_id=?, topic=?, question_no=?, question_name=?, answer_a=?, 
+                    answer_b=?, answer_c=?, answer_d=?, answer_e=?, true_answer_1=?, true_answer_2=?
+                    WHERE pk=?;""".format(self.tablename)
+            values = (self.subject_id, self.topic, self.question_no, self.question_name, self.answer_a, self.answer_b, 
+                    self.answer_c, self.answer_d, self.Answer_e, self.true_answer_1, self.true_answer_2)
+            cursor.execute(sql, values)
 
-        cursor.execute(SQL, (Subject_ID, Subject, Topic, Question_No, Question_Name, Answer_A, Answer_B, Answer_C, Answer_D, Answer_E, True_Answer_1, True_Answer_2))
+    @classmethod
+    def questions_for_subject(cls, subject, limit=None):
+        with sqlite3.connect(cls.dbpath) as connection:
+            # connection.row_factory = sqlite3.Row # makes our code behave like a dict
+            cursor = conn.cursor()
+            sql = f"""SELECT * FROM {cls.tablename} WHERE subject_id=?"""
+            if limit:
+                sql += f" LIMIT {limit}"
+            cursor.execute(sql, (subject,))
+            questions = cursor.fetchall()
+            return questions
+            # return [cls(**question) for question in questions]
 
-# def add_user(name, email, country):
-#     with sqlite3.connect("user.db") as conn:
-#         cursor = conn.cursor()
-#         SQL = """INSERT INTO users(name, email, country) VALUES(?,?,?)"""
+    @classmethod
+    def all_questions(cls, limit=None):
+        with sqlite3.connect(cls.dbpath) as conn:
+            # conn.row_factory = sqlite3.Row # makes our code behave like a dict
+            cursor = conn.cursor()
+            sql = f"""SELECT * FROM {cls.tablename}"""
+            if limit:
+                sql += f" LIMIT {limit}"
+            cursor.execute(sql)
+            questions = cursor.fetchall()
+            return questions
+            # return [cls(**question) for question in questions]
 
-#         cursor.execute(SQL, (name, email, country))
 
 
-if __name__=="__main__":
-    dump_qb('questionbank.csv')
+    
+# if __name__=="__main__":
+#     dump_qb('questionbank.csv')
 
 
 
