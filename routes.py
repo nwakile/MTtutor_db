@@ -37,6 +37,11 @@ def login():
         return jsonify({"token": account.token})
     return jsonify({"token":""})
 
+@app.route("/app/userlogin", methods=["GET"])
+def loginId():
+    loginId = User.login()
+    return jsonify({"email":email, "password":password})
+
 @app.route('/app/fresh_subject', methods=['POST'])
 def create_subject():
     data=request.get_json()
@@ -137,9 +142,7 @@ def get_qb():
     qb = Qb.all_questions()
     return jsonify({"qb":qb})
 
-# @app.route("/app/qb", methods=["GET"])
-# def get_questions():
-#     questions = 
+
 
 # @app.route("/app/qb", methods=["GET"])
 # def get_qb():
