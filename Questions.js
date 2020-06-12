@@ -2,9 +2,17 @@ import React from 'react';
 
 
 function Questions(props) {
+    const getQuestion = async () => {
+
+        const response = await fetch("http://localhost:5000/app/total_qs");
+        // const data = await response.json();
+        // console.log(data);
+        // setAuthToken(data.token)
+      }
+
     return (
         <div className="home">
-
+            <button onClick={getQuestion}>Load Question</button>
             <div class="topContainer">
                 <h5>Question 1 of 10</h5>
                 <h5>QuestionId: 14 </h5>

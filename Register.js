@@ -7,6 +7,20 @@ function Register(props) {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const [inputConfirmpassword, setInputConfirmpassword] = useState("");
+    const getSignup = async () => {
+
+        const configs = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({firstName: inputFirstName, lastName: inputLastName, email: inputEmail, password: inputPassword, confirmpassword: inputConfirmpassword}),
+            mode: 'cors'
+        }
+
+        const response = await fetch("http://localhost:3000/app/create", configs);
+        const data = await response.json();
+        console.log(data);
+        // setAuthToken(data.token)
+      }
     return (
         <div className="home">
 
@@ -20,7 +34,7 @@ function Register(props) {
                 <input id="theInput4" placeholder="Password" onChange={e => setInputPassword(e.target.value)} />
                 <input id="theInput5" placeholder="Confirmpassword" onChange={e => setInputConfirmpassword(e.target.value)} />
                 <br /> <br />
-                <button id="theButton1">Register</button> <br /> <br />
+                <button id="theButton1" onClick={getSignup}>Register</button> <br /> <br />
                 <p>First Name: {inputFirstName}</p>
                 <p>Last Name: {inputLastName}</p>
                 <p>Email: {inputEmail}</p>

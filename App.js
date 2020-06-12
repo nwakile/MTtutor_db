@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './components/logo.png';
+// import logo from './components/logo.png';
 import './App.css';
-import Login from './components/Login';
+import Questions from './components/Questions';
 
 // import Questions from './components/Questions';
 import NavBar from './components/NavBar';
@@ -14,7 +14,7 @@ function App() {
       {/* <header className="App-header"> */}
       <logo />
       <NavBar />
-      <Login />
+      <Questions />
       {/* </header> */}
     </div>
 

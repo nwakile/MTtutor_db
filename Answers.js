@@ -2,9 +2,17 @@ import React from 'react';
 
 
 function Answers(props) {
+    const getAnswers = async () => {
+
+        const response = await fetch("http://localhost:5000/app/performance", configs);
+        // const data = await response.json();
+        // console.log(data);
+        // // setAuthToken(data.token)
+      }
+
     return (
         <div className="home">
-
+            <button onClick={getAnswers}>Load Performance</button>
             <div class="topContainer">
                 <h5>Question 1 of 10</h5>
                 <h5>QuestionId: 14 </h5>
