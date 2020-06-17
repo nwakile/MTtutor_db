@@ -20,7 +20,7 @@ def create_user():
         # new_user.auth_token = generate_auth_token()
         new_user.auth_token = "token"
         new_user.save()
-        return jsonify({'status':'success. Please sign-in', 'new user.auth_token': new_user.auth_token})
+        return jsonify({'status':'success. Please sign-in', 'token': new_user.auth_token})
     return jsonify({"error":"invalid data"})
 
 @app.route("/app/login", methods=["POST"])
